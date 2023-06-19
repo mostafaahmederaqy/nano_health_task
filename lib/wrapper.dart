@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nano_health_task/providers/auth_provider.dart';
-import 'package:nano_health_task/screesns/bottom_nav_Bar.dart';
-import 'package:nano_health_task/screesns/login_screen.dart';
+import 'package:nano_health_task/screens/bottom_nav_Bar.dart';
+import 'package:nano_health_task/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {

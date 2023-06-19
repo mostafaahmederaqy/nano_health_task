@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nano_health_task/providers/login_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../common_widgets/custom_button.dart';
 import '../common_widgets/custom_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -52,20 +53,31 @@ class LoginScreen extends StatelessWidget {
               hint:'password',
               inputType: TextInputType.visiblePassword,
             ),
-            CustomTextField(
-              passwordVisible:loginProvider.passwordVisible,
-              onVisibleIconTap: (){
-                loginProvider.changeVisibility();
+
+            loginProvider.isLoading?const Center(child: CircularProgressIndicator()):CustomButton(
+              onTap: ()async{
+                if(loginProvider.formKey.currentState!.validate()){
+                  FocusScope.of(context)
+                      .unfocus();
+                  await loginProvider.login(
+                  );
+
+
+                 if (loginProvider.userError != null) {
+                    const snackBar = SnackBar(
+                      content: Text('Invalid email and/or password'),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                 }
+                }
               },
-              onValidate: (value) => value!.length < 6
-                  ? "Please enter a password with 6+ chars long"
-                  : null,
-              isPassword: true,
-              controller: loginProvider.passwordController,
-              label: 'password',
-              hint:'password',
-              inputType: TextInputType.visiblePassword,
+              color: const Color(0xffFF0065),
+              textColor: Colors.white,
+              label:'Submit' ,
             ),
+
           ],
 
         )

@@ -22,6 +22,8 @@ class LoginProvider extends ChangeNotifier {
 
   bool get passwordVisible => _passwordVisible;
 
+
+
   set passwordVisible(bool value) {
     _passwordVisible = value;
     notifyListeners();
@@ -64,10 +66,12 @@ class LoginProvider extends ChangeNotifier {
 
     if (response is Success) {
       final loginResponse = response.response as LoginModel;
+      print(loginResponse);
       notifyListeners();
       await read<AuthProvider>().saveUser(token: loginResponse.token);
       isLoading = false;
     } else if (response is Failure) {
+      print(response.errorResponse);
       userError = response.errorResponse as String?;
       isLoading = false;
     }

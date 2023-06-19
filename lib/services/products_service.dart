@@ -1,33 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import '../models/products_model.dart';
 import '../utilities/api_status.dart';
 import '../utilities/constants.dart';
-import 'package:nano_health_task/models/login_model.dart';
 
-
-class AuthService{
-  Future<Object> loginApi({
-    required String email,
-    required String password
-})async{
-    final url = Uri.https('fakestoreapi.com', 'auth/login');
+class ProductsService{
+  Future<Object> productsApi()async{
+    final url = Uri.https('fakestoreapi.com', 'products');
     try {
-      final response = await http.post(
+      final response = await http.get(
         url,
-        body: {
-          "username": 'mor_2314',
-          'password': '83r5^_',
-        },
       );
-      print(response.body);
       if (response.statusCode == Ksuccess) {
-        return Success(response: loginModelFromJson(response.body));
+        return Success(response: productsModelFromJson(response.body));
       } else {
         final responseData = json.decode(response.body);
         return Failure(errorResponse: response.body);
       }
-    } on HttpException {
+    }on HttpException {
       return Failure(errorResponse: 'sorry something went wrong');
     } on SocketException {
       return Failure(errorResponse: 'no internet connection');
@@ -36,7 +27,5 @@ class AuthService{
     } catch (error, stackTrace) {
       return Failure(errorResponse: 'oops something went wrong');
     }
-
-
   }
 }
